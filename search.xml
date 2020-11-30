@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>获取当前日期并以YYYY-MM-DD形式输出</title>
+    <url>/2020/11/30/%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E5%B9%B6%E4%BB%A5YYYY-MM-DD%E5%BD%A2%E5%BC%8F%E8%BE%93%E5%87%BA/</url>
+    <content><![CDATA[<h4 id="方法一、"><a href="#方法一、" class="headerlink" title="方法一、"></a>方法一、</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取当前时间，格式YYYY-MM-DD</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNowFormatDate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">  <span class="keyword">var</span> seperator1 = <span class="string">&quot;-&quot;</span>;</span><br><span class="line">  <span class="keyword">var</span> year = date.getFullYear();</span><br><span class="line">  <span class="keyword">var</span> month = date.getMonth() + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">var</span> strDate = date.getDate();</span><br><span class="line">  <span class="keyword">if</span> (month &gt;= <span class="number">1</span> &amp;&amp; month &lt;= <span class="number">9</span>) &#123; month = <span class="string">&quot;0&quot;</span> + month; &#125;</span><br><span class="line">  <span class="keyword">if</span> (strDate &gt;= <span class="number">0</span> &amp;&amp; strDate &lt;= <span class="number">9</span>) &#123; strDate = <span class="string">&quot;0&quot;</span> + strDate; &#125;</span><br><span class="line">  <span class="keyword">var</span> currentdate = year + seperator1 + month + seperator1 + strDate;</span><br><span class="line">  <span class="keyword">return</span> currentdate;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(getNowFormatDate());</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="方法二、"><a href="#方法二、" class="headerlink" title="方法二、"></a>方法二、</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> myDate = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="keyword">var</span> time = myDate.toLocaleDateString().split(<span class="string">&#x27;/&#x27;</span>).join(<span class="string">&#x27;-&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(time);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Vue中的computed和watch区别</title>
     <url>/2020/11/29/Vue%E4%B8%ADcomputed%E5%92%8Cwatch%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p>以vue.js官方文档中获取全名的一个例子：</p>
@@ -41,34 +53,6 @@
 ]]></content>
       <categories>
         <category>Vue</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>获取当前日期并以YYYY-MM-DD形式输出</title>
-    <url>/2020/11/30/%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E5%B9%B6%E4%BB%A5YYYY-MM-DD%E5%BD%A2%E5%BC%8F%E8%BE%93%E5%87%BA/</url>
-    <content><![CDATA[<h4 id="方法一、"><a href="#方法一、" class="headerlink" title="方法一、"></a>方法一、</h4>  <script>
-    //获取当前时间，格式YYYY-MM-DD
-    function getNowFormatDate() {
-      var date = new Date();
-      var seperator1 = "-";
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) { month = "0" + month; }
-      if (strDate >= 0 && strDate <= 9) { strDate = "0" + strDate; }
-      var currentdate = year + seperator1 + month + seperator1 + strDate;
-      return currentdate;
-    }
-    console.log(getNowFormatDate());
-  </script>
-
-<h4 id="方法二、"><a href="#方法二、" class="headerlink" title="方法二、"></a>方法二、</h4> <script>
-    var myDate = new Date();
-    var time = myDate.toLocaleDateString().split('/').join('-');
-    console.log(time);
-  </script>]]></content>
-      <categories>
-        <category>vue</category>
       </categories>
   </entry>
 </search>
