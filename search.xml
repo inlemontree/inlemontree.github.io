@@ -62,8 +62,10 @@
   </entry>
   <entry>
     <title>JavaScript之闭包</title>
-    <url>/2020/11/25/JavaScript%E4%B9%8B%E9%97%AD%E5%8C%85/</url>
+    <url>/2020/11/20/JavaScript%E4%B9%8B%E9%97%AD%E5%8C%85/</url>
     <content><![CDATA[<h2 id="什么是闭包？"><a href="#什么是闭包？" class="headerlink" title="什么是闭包？"></a>什么是闭包？</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">闭包就是能够读取其他函数内部变量的函数。通俗一点呢？通俗的讲就是函数a的内部函数b，被函数a外部的一个变量引用的时候，就创建了一个闭包。那什么情况下会用到闭包吗？最常见的是函数封装的时候，再就是在使用定时器的时候，会经常用到</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
 
 <p>简单写一个闭包吧</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="keyword">var</span> i=<span class="number">0</span>;</span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">         i++;</span><br><span class="line">         alert(i);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = a();</span><br><span class="line">c();<span class="comment">//？</span></span><br><span class="line">c();<span class="comment">//？</span></span><br><span class="line">c();<span class="comment">//？</span></span><br></pre></td></tr></table></figure>
@@ -316,7 +318,7 @@
   </entry>
   <entry>
     <title>JavaScript之原型</title>
-    <url>/2020/12/01/%E9%9D%A2%E8%AF%95%E5%BF%85%E9%97%AE%E4%B9%8B%E5%8E%9F%E5%9E%8B%E9%93%BE/</url>
+    <url>/2020/11/21/%E9%9D%A2%E8%AF%95%E5%BF%85%E9%97%AE%E4%B9%8B%E5%8E%9F%E5%9E%8B%E9%93%BE/</url>
     <content><![CDATA[<p>关于原型和原型链这一块本人也是理解了一段时间才有了初步的认识，理解障碍第一就是一些专有名词的混淆，比如：<code>prototype</code> 和 <code>__proto__</code>过于相似不好去记忆，下面是自己的一些总结。</p>
 <a id="more"></a>
 <h2 id="一、原型-prototype-和-proto"><a href="#一、原型-prototype-和-proto" class="headerlink" title="一、原型 prototype 和 __proto__"></a>一、原型 <code>prototype</code> 和 <code>__proto__</code></h2><ul>
