@@ -150,6 +150,37 @@
       </categories>
   </entry>
   <entry>
+    <title>为什么0.1+0.2=0.30000000000000004？</title>
+    <url>/2020/11/05/%E4%B8%BA%E4%BB%80%E4%B9%880.1+0.2%EF%BC%81=0.3/</url>
+    <content><![CDATA[<p>​    首先看一个例子：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1</span> + <span class="number">0.2</span>) <span class="comment">// 0.30000000000000004</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1</span>+<span class="number">0.2</span>!=<span class="number">0.3</span>) <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="数字的存储和运算"><a href="#数字的存储和运算" class="headerlink" title="数字的存储和运算"></a>数字的存储和运算</h2><p>​    这其中涉及到JavaScript<code>数字运算的精度丢失</code>问题，要弄清这个问题的原因，首先我们需要了解下在计算机中数字是如何存储和运算的。在计算机中，数字无论是定点数还是浮点数都是以多位二进制的方式进行存储的。在JS中数字采用的IEEE 754的双精度标准进行存储，我们可以无需知道他的存储形式，只需要简单的理解成就是存储一个数值所使用的二进制位数比较多而已，这样得到的数会更加精确。</p>
+<p>​    这里为了简单直观，我们使用定点数来说明问题。在定点数中，如果我们以8位二进制来存储数字。</p>
+<p>对于整数来说，十进制的35会被存储为： <code>00100011</code> 其代表 <code>2^5 + 2^1 + 2^0</code>。<br>对于纯小数来说，十进制的0.375会被存储为： <code>0.011</code> 其代表 <code>1/2^2 + 1/2^3</code> = <code>1/4 + 1/8 = 0.375</code></p>
+<p>​    而对于像0.1这样的数值用二进制表示你就会发现无法整除，最后算下来会是 <code>0.000110011....</code>由于存储空间有限，最后计算机会舍弃后面的数值，所以我们最后就只能得到一个近似值。在JS中采用的IEEE 754的双精度标准也是一样的道理，我们且不管这个标准下的存储方式跟定点数存储有何不同，单单在这一点上他们都是相同的，也就是存储空间有限，当出现这种无法整除的小数的时候就会取一个近似值，在js中如果这个近似值足够近似，那么js就会认为他就是那个值。</p>
+<blockquote>
+<p>关于浮点数值计算会产生舍入误差的问题，有一点需要明确：这是使用基于IEEE754数值的浮点计算的通病，ECMScript并非独此一家；使用其他相同数值格式的语言也存在这个问题。</p>
+</blockquote>
+<h2 id="浮点数值的最高精度是多少？"><a href="#浮点数值的最高精度是多少？" class="headerlink" title="浮点数值的最高精度是多少？"></a>浮点数值的最高精度是多少？</h2><p>​    答案是<strong>17</strong>位小数，因此在进行算数计算时其精确度远远不如整数。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1000000000000001</span>)  </span><br><span class="line"><span class="comment">// 0.1000000000000001 (中间14个0，会打印出它本身)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0.10000000000000001</span>)  </span><br><span class="line"><span class="comment">// 0.1 (中间15个0，结果和我们预想的不一样，js会认为这两个值足够接近，所以会显示0.1)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1</span> + <span class="number">0.2</span>) <span class="comment">// 0.30000000000000004 (中间15个0，同样与我们预想的不一样)</span></span><br></pre></td></tr></table></figure>
+
+<p>​     所以我们现在应该可以理解，就是说由于0.1转换成二进制时是无限循环的，所以在计算机中0.1只能存储成一个近似值。另外说一句，除了那些能表示成 <code>x/2^n</code> 的数可以被精确表示以外，其余小数都是以近似值得方式存在的。</p>
+<p>​    在0.1 + 0.2这个式子中，0.1和0.2都是近似表示的，在他们相加的时候，两个近似值进行了计算，导致最后得到的值是<code>0.30000000000000004</code>，此时对于JS来说，其不够近似于0.3，于是就出现了<code>0.1 + 0.2 != 0.3</code> 这个现象。<br>​    当然，也并非所有的近似值相加都得不到正确的结果。有时两个近似值进行计算的时候，得到的值是在JS的近似范围内的，于是就可以得到正确答案。</p>
+<h2 id="怎么解决问题？"><a href="#怎么解决问题？" class="headerlink" title="怎么解决问题？"></a>怎么解决问题？</h2><p>​    那么最常用的方法就是将浮点数转化成整数计算。因为整数都是可以精确表示的。</p>
+<p>比如：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">对于<span class="number">0.1</span> + <span class="number">0.02</span> 我们需要转化成 ( <span class="number">10</span> + <span class="number">2</span> ) / <span class="number">1e2</span></span><br><span class="line">对于<span class="number">0.1</span> * <span class="number">0.02</span> 我们则转化成 <span class="number">1</span> * <span class="number">2</span> / <span class="number">1e3</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+  </entry>
+  <entry>
     <title>null与undefined</title>
     <url>/2020/11/02/null%E4%B8%8Eundefined/</url>
     <content><![CDATA[<h2 id="Undefined-类型"><a href="#Undefined-类型" class="headerlink" title="Undefined 类型"></a>Undefined 类型</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>Undefined类型只有一个值，就是特殊的undefined，在两种情况下我们会得到undefined：</p>
@@ -220,30 +251,13 @@
       </categories>
   </entry>
   <entry>
-    <title>为什么0.1+0.2=0.30000000000000004？</title>
-    <url>/2020/11/05/%E4%B8%BA%E4%BB%80%E4%B9%880.1+0.2%EF%BC%81=0.3/</url>
-    <content><![CDATA[<p>​    首先看一个例子：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1</span> + <span class="number">0.2</span>) <span class="comment">// 0.30000000000000004</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1</span>+<span class="number">0.2</span>!=<span class="number">0.3</span>) <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+    <title>获取文件名后缀</title>
+    <url>/2020/11/10/%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E5%90%8D%E5%90%8E%E7%BC%80/</url>
+    <content><![CDATA[<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getType</span>(<span class="params">file</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> filename = file;</span><br><span class="line">  <span class="keyword">var</span> index1 = filename.lastIndexOf(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">  <span class="keyword">var</span> index2 = filename.length;</span><br><span class="line">  <span class="keyword">var</span> type = filename.substring(index1, index2);</span><br><span class="line">  <span class="keyword">return</span> type;</span><br><span class="line">  <span class="built_in">console</span>.log(type);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(getType(<span class="string">&#x27;test.exe&#x27;</span>));</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<h2 id="数字的存储和运算"><a href="#数字的存储和运算" class="headerlink" title="数字的存储和运算"></a>数字的存储和运算</h2><p>​    这其中涉及到JavaScript<code>数字运算的精度丢失</code>问题，要弄清这个问题的原因，首先我们需要了解下在计算机中数字是如何存储和运算的。在计算机中，数字无论是定点数还是浮点数都是以多位二进制的方式进行存储的。在JS中数字采用的IEEE 754的双精度标准进行存储，我们可以无需知道他的存储形式，只需要简单的理解成就是存储一个数值所使用的二进制位数比较多而已，这样得到的数会更加精确。</p>
-<p>​    这里为了简单直观，我们使用定点数来说明问题。在定点数中，如果我们以8位二进制来存储数字。</p>
-<p>对于整数来说，十进制的35会被存储为： <code>00100011</code> 其代表 <code>2^5 + 2^1 + 2^0</code>。<br>对于纯小数来说，十进制的0.375会被存储为： <code>0.011</code> 其代表 <code>1/2^2 + 1/2^3</code> = <code>1/4 + 1/8 = 0.375</code></p>
-<p>​    而对于像0.1这样的数值用二进制表示你就会发现无法整除，最后算下来会是 <code>0.000110011....</code>由于存储空间有限，最后计算机会舍弃后面的数值，所以我们最后就只能得到一个近似值。在JS中采用的IEEE 754的双精度标准也是一样的道理，我们且不管这个标准下的存储方式跟定点数存储有何不同，单单在这一点上他们都是相同的，也就是存储空间有限，当出现这种无法整除的小数的时候就会取一个近似值，在js中如果这个近似值足够近似，那么js就会认为他就是那个值。</p>
-<blockquote>
-<p>关于浮点数值计算会产生舍入误差的问题，有一点需要明确：这是使用基于IEEE754数值的浮点计算的通病，ECMScript并非独此一家；使用其他相同数值格式的语言也存在这个问题。</p>
-</blockquote>
-<h2 id="浮点数值的最高精度是多少？"><a href="#浮点数值的最高精度是多少？" class="headerlink" title="浮点数值的最高精度是多少？"></a>浮点数值的最高精度是多少？</h2><p>​    答案是<strong>17</strong>位小数，因此在进行算数计算时其精确度远远不如整数。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1000000000000001</span>)  </span><br><span class="line"><span class="comment">// 0.1000000000000001 (中间14个0，会打印出它本身)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0.10000000000000001</span>)  </span><br><span class="line"><span class="comment">// 0.1 (中间15个0，结果和我们预想的不一样，js会认为这两个值足够接近，所以会显示0.1)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0.1</span> + <span class="number">0.2</span>) <span class="comment">// 0.30000000000000004 (中间15个0，同样与我们预想的不一样)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> fileName = <span class="string">&quot;www.aaa.com/index.html&quot;</span>;</span><br><span class="line"></span><br><span class="line">方法<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fileExtension = fileName.substring(fileName.lastIndexOf(<span class="string">&#x27;.&#x27;</span>) + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">方法<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fileExtension =fileName.substring(fileName.length-<span class="number">3</span>,fileName.length).toLowerCase();</span><br><span class="line"></span><br><span class="line">方法<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fileExtension = fileName.split(<span class="string">&#x27;.&#x27;</span>).pop().toLowerCase();</span><br></pre></td></tr></table></figure>
 
-<p>​     所以我们现在应该可以理解，就是说由于0.1转换成二进制时是无限循环的，所以在计算机中0.1只能存储成一个近似值。另外说一句，除了那些能表示成 <code>x/2^n</code> 的数可以被精确表示以外，其余小数都是以近似值得方式存在的。</p>
-<p>​    在0.1 + 0.2这个式子中，0.1和0.2都是近似表示的，在他们相加的时候，两个近似值进行了计算，导致最后得到的值是<code>0.30000000000000004</code>，此时对于JS来说，其不够近似于0.3，于是就出现了<code>0.1 + 0.2 != 0.3</code> 这个现象。<br>​    当然，也并非所有的近似值相加都得不到正确的结果。有时两个近似值进行计算的时候，得到的值是在JS的近似范围内的，于是就可以得到正确答案。</p>
-<h2 id="怎么解决问题？"><a href="#怎么解决问题？" class="headerlink" title="怎么解决问题？"></a>怎么解决问题？</h2><p>​    那么最常用的方法就是将浮点数转化成整数计算。因为整数都是可以精确表示的。</p>
-<p>比如：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">对于<span class="number">0.1</span> + <span class="number">0.02</span> 我们需要转化成 ( <span class="number">10</span> + <span class="number">2</span> ) / <span class="number">1e2</span></span><br><span class="line">对于<span class="number">0.1</span> * <span class="number">0.02</span> 我们则转化成 <span class="number">1</span> * <span class="number">2</span> / <span class="number">1e3</span></span><br></pre></td></tr></table></figure>
-
-
-
-
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFileType</span>(<span class="params">filePath</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> startIndex = filePath.lastIndexOf(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(startIndex != -<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">return</span> filePath.substring(startIndex+<span class="number">1</span>, filePath.length).toLowerCase();</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -297,20 +311,6 @@
 <a id="more"></a>
 
 <h4 id="方法二、"><a href="#方法二、" class="headerlink" title="方法二、"></a>方法二、</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> myDate = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="keyword">var</span> time = myDate.toLocaleDateString().split(<span class="string">&#x27;/&#x27;</span>).join(<span class="string">&#x27;-&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(time);</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>获取文件名后缀</title>
-    <url>/2020/11/10/%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E5%90%8D%E5%90%8E%E7%BC%80/</url>
-    <content><![CDATA[<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getType</span>(<span class="params">file</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> filename = file;</span><br><span class="line">  <span class="keyword">var</span> index1 = filename.lastIndexOf(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">  <span class="keyword">var</span> index2 = filename.length;</span><br><span class="line">  <span class="keyword">var</span> type = filename.substring(index1, index2);</span><br><span class="line">  <span class="keyword">return</span> type;</span><br><span class="line">  <span class="built_in">console</span>.log(type);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(getType(<span class="string">&#x27;test.exe&#x27;</span>));</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> fileName = <span class="string">&quot;www.aaa.com/index.html&quot;</span>;</span><br><span class="line"></span><br><span class="line">方法<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fileExtension = fileName.substring(fileName.lastIndexOf(<span class="string">&#x27;.&#x27;</span>) + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">方法<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fileExtension =fileName.substring(fileName.length-<span class="number">3</span>,fileName.length).toLowerCase();</span><br><span class="line"></span><br><span class="line">方法<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fileExtension = fileName.split(<span class="string">&#x27;.&#x27;</span>).pop().toLowerCase();</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFileType</span>(<span class="params">filePath</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> startIndex = filePath.lastIndexOf(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(startIndex != -<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">return</span> filePath.substring(startIndex+<span class="number">1</span>, filePath.length).toLowerCase();</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <categories>
         <category>JavaScript</category>
