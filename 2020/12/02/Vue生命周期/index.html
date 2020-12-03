@@ -22,21 +22,21 @@
     var CONFIG = {"hostname":"papercloud.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="关于原型和原型链这一块本人也是理解了一段时间才有了初步的认识，理解障碍第一就是一些专有名词的混淆，比如：prototype 和 __proto__过于相似不好去记忆，下面是自己的一些总结。">
+  <meta name="description" content="Vue 的生命周期是什么？1Vue 的生命周期指的是组件从创建到销毁的一系列的过程，被称为 Vue 的生命周期。通过提供的 Vue 在生命周期各个阶段的钩子函数，我们可以很好的在 Vue 的各个生命阶段实现一些操作。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript之原型">
-<meta property="og:url" content="http://papercloud.top/2020/11/21/%E9%9D%A2%E8%AF%95%E5%BF%85%E9%97%AE%E4%B9%8B%E5%8E%9F%E5%9E%8B%E9%93%BE/index.html">
+<meta property="og:title" content="Vue生命周期">
+<meta property="og:url" content="http://papercloud.top/2020/12/02/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
 <meta property="og:site_name" content="纸云">
-<meta property="og:description" content="关于原型和原型链这一块本人也是理解了一段时间才有了初步的认识，理解障碍第一就是一些专有名词的混淆，比如：prototype 和 __proto__过于相似不好去记忆，下面是自己的一些总结。">
+<meta property="og:description" content="Vue 的生命周期是什么？1Vue 的生命周期指的是组件从创建到销毁的一系列的过程，被称为 Vue 的生命周期。通过提供的 Vue 在生命周期各个阶段的钩子函数，我们可以很好的在 Vue 的各个生命阶段实现一些操作。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/inlemontree/image/master/116c3514022e6e0a29cfe3aed5e4720.jpg">
-<meta property="article:published_time" content="2020-11-21T11:37:47.000Z">
-<meta property="article:modified_time" content="2020-12-02T12:11:53.761Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/inlemontree/image/master/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+<meta property="article:published_time" content="2020-12-02T15:02:50.000Z">
+<meta property="article:modified_time" content="2020-12-03T15:09:04.135Z">
 <meta property="article:author" content="剪云者">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/inlemontree/image/master/116c3514022e6e0a29cfe3aed5e4720.jpg">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/inlemontree/image/master/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
 
-<link rel="canonical" href="http://papercloud.top/2020/11/21/%E9%9D%A2%E8%AF%95%E5%BF%85%E9%97%AE%E4%B9%8B%E5%8E%9F%E5%9E%8B%E9%93%BE/">
+<link rel="canonical" href="http://papercloud.top/2020/12/02/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
 
 <script id="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>JavaScript之原型 | 纸云</title>
+  <title>Vue生命周期 | 纸云</title>
   
 
 
@@ -187,7 +187,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://papercloud.top/2020/11/21/%E9%9D%A2%E8%AF%95%E5%BF%85%E9%97%AE%E4%B9%8B%E5%8E%9F%E5%9E%8B%E9%93%BE/">
+    <link itemprop="mainEntityOfPage" href="http://papercloud.top/2020/12/02/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -200,7 +200,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          JavaScript之原型
+          Vue生命周期
         </h1>
 
         <div class="post-meta">
@@ -210,7 +210,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-21 19:37:47" itemprop="dateCreated datePublished" datetime="2020-11-21T19:37:47+08:00">2020-11-21</time>
+              <time title="创建时间：2020-12-02 23:02:50" itemprop="dateCreated datePublished" datetime="2020-12-02T23:02:50+08:00">2020-12-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,7 +218,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
                 </span>
             </span>
 
@@ -233,27 +233,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>关于原型和原型链这一块本人也是理解了一段时间才有了初步的认识，理解障碍第一就是一些专有名词的混淆，比如：<code>prototype</code> 和 <code>__proto__</code>过于相似不好去记忆，下面是自己的一些总结。</p>
+        <h4 id="Vue-的生命周期是什么？"><a href="#Vue-的生命周期是什么？" class="headerlink" title="Vue 的生命周期是什么？"></a>Vue 的生命周期是什么？</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue 的生命周期指的是组件从创建到销毁的一系列的过程，被称为 Vue 的生命周期。通过提供的 Vue 在生命周期各个阶段的钩子函数，我们可以很好的在 Vue 的各个生命阶段实现一些操作。</span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
-<h2 id="一、原型-prototype-和-proto"><a href="#一、原型-prototype-和-proto" class="headerlink" title="一、原型 prototype 和 __proto__"></a>一、原型 <code>prototype</code> 和 <code>__proto__</code></h2><ul>
-<li><p>每个对象都有一个<code>__proto__</code>属性，并且指向它的<code>prototype</code>原型对象</p>
-</li>
-<li><p>每个构造函数都有一个<code>prototype</code>原型对象</p>
-</li>
-<li><ul>
-<li><code>prototype</code>原型对象里的<code>constructor</code>指向构造函数本身</li>
-</ul>
-</li>
-</ul>
-<p><img data-src="https://raw.githubusercontent.com/inlemontree/image/master/116c3514022e6e0a29cfe3aed5e4720.jpg"></p>
-<h3 id="你可能会问prototype-和-proto-有什么用呢？"><a href="#你可能会问prototype-和-proto-有什么用呢？" class="headerlink" title="你可能会问prototype 和 __proto__有什么用呢？"></a>你可能会问<code>prototype</code> 和 <code>__proto__</code>有什么用呢？</h3><p>实例对象的<code>__proto__</code>指向构造函数的<code>prototype</code>，从而实现继承。</p>
-<p><code>prototype</code>对象相当于特定类型所有实例对象都可以访问的公共容器</p>
-<h2 id="js-获取原型的方法？"><a href="#js-获取原型的方法？" class="headerlink" title="js 获取原型的方法？"></a>js 获取原型的方法？</h2><ul>
-<li>p.__proto__</li>
-<li>p.constructor.prototype</li>
-<li>Object.getPrototypeOf(p)</li>
-</ul>
-<h2 id="他们的特点是什么"><a href="#他们的特点是什么" class="headerlink" title="他们的特点是什么"></a>他们的特点是什么</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">在 js 中我们是使用构造函数来新建一个对象的，每一个构造函数的内部都有一个 prototype 属性值，这个属性值是一个对</span><br><span class="line">象，这个对象包含了可以由该构造函数的所有实例共享的属性和方法。当我们使用构造函数新建一个对象后，在这个对象的内部</span><br><span class="line">将包含一个指针，这个指针指向构造函数的 prototype 属性对应的值，在 ES5 中这个指针被称为对象的原型。一般来说我们</span><br><span class="line">是不应该能够获取到这个值的，但是现在浏览器中都实现了 __proto__ 属性来让我们访问这个属性，但是我们最好不要使用这</span><br><span class="line">个属性，因为它不是规范中规定的。ES5 中新增了一个 Object.getPrototypeOf() 方法，我们可以通过这个方法来获取对</span><br><span class="line">象的原型。</span><br><span class="line"></span><br><span class="line">当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又</span><br><span class="line">会有自己的原型，于是就这样一直找下去，也就是原型链的概念。原型链的尽头一般来说都是 Object.prototype 所以这就</span><br><span class="line">是我们新建的对象为什么能够使用 toString() 等方法的原因。</span><br><span class="line"></span><br><span class="line">特点：</span><br><span class="line"></span><br><span class="line">JavaScript 对象是通过引用来传递的，我们创建的每个新对象实体中并没有一份属于自己的原型副本。当我们修改原型时，与</span><br><span class="line">之相关的对象也会继承这一改变。</span><br></pre></td></tr></table></figure>
+
+<h4 id="Vue-的各个生命阶段是什么？"><a href="#Vue-的各个生命阶段是什么？" class="headerlink" title="Vue 的各个生命阶段是什么？"></a>Vue 的各个生命阶段是什么？</h4><p><img data-src="https://raw.githubusercontent.com/inlemontree/image/master/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Vue 一共有8个生命阶段，分别是创建前、创建后、加载前、加载后、更新前、更新后、销毁前和销毁后，每个阶段对应了一个生命周期的钩子函数。</span><br><span class="line"></span><br><span class="line">（1）beforeCreate 钩子函数，在实例初始化之后，在数据监听和事件配置之前触发。因此在这个事件中我们是获取不到 data 数据的。</span><br><span class="line"></span><br><span class="line">（2）created 钩子函数，在实例创建完成后触发，此时可以访问 data、methods 等属性。但这个时候组件还没有被挂载到页面中去，所以这个时候访问不到 $el 属性。一般我们可以在这个函数中进行一些页面初始化的工作，比如通过 ajax 请求数据来对页面进行初始化。</span><br><span class="line"></span><br><span class="line">（3）beforeMount 钩子函数，在组件被挂载到页面之前触发。在 beforeMount 之前，会找到对应的 template，并编译成 render 函数。</span><br><span class="line"></span><br><span class="line">（4）mounted 钩子函数，在组件挂载到页面之后触发。此时可以通过 DOM API 获取到页面中的 DOM 元素。</span><br><span class="line"></span><br><span class="line">（5）beforeUpdate 钩子函数，在响应式数据更新时触发，发生在虚拟 DOM 重新渲染和打补丁之前，这个时候我们可以对可能会被移除的元素做一些操作，比如移除事件监听器。</span><br><span class="line"></span><br><span class="line">（6）updated 钩子函数，虚拟 DOM 重新渲染和打补丁之后调用。</span><br><span class="line"></span><br><span class="line">（7）beforeDestroy 钩子函数，在实例销毁之前调用。一般在这一步我们可以销毁定时器、解绑全局事件等。</span><br><span class="line"></span><br><span class="line">（8）destroyed 钩子函数，在实例销毁之后调用，调用后，Vue 实例中的所有东西都会解除绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。</span><br><span class="line"></span><br><span class="line">注：当我们使用 keep-alive 的时候，还有两个钩子函数，分别是 activated 和 deactivated 。用 keep-alive 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 deactivated 钩子函数，命中缓存渲染后会执行 actived 钩子函数。</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -270,13 +255,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/20/JavaScript%E4%B9%8B%E9%97%AD%E5%8C%85/" rel="prev" title="JavaScript之闭包">
-      <i class="fa fa-chevron-left"></i> JavaScript之闭包
+    <a href="/2020/11/29/Vue%E4%B8%ADcomputed%E5%92%8Cwatch%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/" rel="prev" title="Vue中的computed和watch区别">
+      <i class="fa fa-chevron-left"></i> Vue中的computed和watch区别
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/11/29/Vue%E4%B8%ADcomputed%E5%92%8Cwatch%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/" rel="next" title="Vue中的computed和watch区别">
-      Vue中的computed和watch区别 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -335,7 +317,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8E%9F%E5%9E%8B-prototype-%E5%92%8C-proto"><span class="nav-number">1.</span> <span class="nav-text">一、原型 prototype 和 __proto__</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%A0%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%97%AEprototype-%E5%92%8C-proto-%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8%E5%91%A2%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">你可能会问prototype 和 __proto__有什么用呢？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js-%E8%8E%B7%E5%8F%96%E5%8E%9F%E5%9E%8B%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">js 获取原型的方法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%96%E4%BB%AC%E7%9A%84%E7%89%B9%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">3.</span> <span class="nav-text">他们的特点是什么</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Vue-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Vue 的生命周期是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vue-%E7%9A%84%E5%90%84%E4%B8%AA%E7%94%9F%E5%91%BD%E9%98%B6%E6%AE%B5%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">Vue 的各个生命阶段是什么？</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
